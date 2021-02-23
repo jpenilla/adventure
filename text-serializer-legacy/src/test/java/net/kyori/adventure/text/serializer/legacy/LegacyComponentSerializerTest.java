@@ -281,4 +281,16 @@ class LegacyComponentSerializerTest {
     assertNull(lf.decoration());
     assertTrue(lf.reset());
   }
+
+  @Test
+  void testIncompleteHexColorCodes() {
+    assertEquals(Component.text("§#"), LegacyComponentSerializer.legacySection().deserialize("§#"));
+    assertEquals(Component.text("§#f"), LegacyComponentSerializer.legacySection().deserialize("§#f"));
+    assertEquals(Component.text("§#ff"), LegacyComponentSerializer.legacySection().deserialize("§#ff"));
+    assertEquals(Component.text("§#fff"), LegacyComponentSerializer.legacySection().deserialize("§#fff"));
+    assertEquals(Component.text("§#ffff"), LegacyComponentSerializer.legacySection().deserialize("§#ffff"));
+    assertEquals(Component.text("§#fffff"), LegacyComponentSerializer.legacySection().deserialize("§#fffff"));
+    // and a complete one for good measure
+    assertEquals(Component.text("", TextColor.color(0xffffff)), LegacyComponentSerializer.legacySection().deserialize("§#ffffff"));
+  }
 }

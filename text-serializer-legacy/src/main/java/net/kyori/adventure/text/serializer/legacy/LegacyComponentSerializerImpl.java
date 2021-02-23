@@ -121,11 +121,23 @@ final class LegacyComponentSerializerImpl implements LegacyComponentSerializer {
       }
     }
     if(legacy == this.hexCharacter) {
-      return FormatCodeType.KYORI_HEX;
+      if(input.length() - pos >= 6) {
+        for(int i = pos; i < pos + 6; i++) {
+          if(!isHex(input.charAt(i))) {
+            return null;
+          }
+        }
+        return FormatCodeType.KYORI_HEX;
+      }
+      return null;
     } else if(LEGACY_CHARS.indexOf(legacy) != -1) {
       return FormatCodeType.MOJANG_LEGACY;
     }
     return null;
+  }
+
+  static boolean isHex(final char c) {
+    return (c >= 'a' && c <= 'f') || (c >= '0' && c <= '9');
   }
 
   static @Nullable LegacyFormat legacyFormat(final char character) {
